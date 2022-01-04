@@ -12,24 +12,27 @@ public class UpdateService : IUpdateService
 {
     private IBotService BotService { get; }
     private ILogger<UpdateService> Logger { get; }
+    private IInlineCommandService InlineCommandService { get; }
 
-    public UpdateService(IBotService botService, ILogger<UpdateService> logger)
+    public UpdateService(IBotService botService, ILogger<UpdateService> logger,
+        IInlineCommandService inlineCommandService)
     {
         Logger = logger;
+        InlineCommandService = inlineCommandService;
         BotService = botService;
     }
 
     public Task EchoAsync(Update update)
-        =>
+    {
+        return
 #pragma warning disable CS8509
             update.Type switch
-#pragma warning restore CS8509
             {
                 UpdateType.Message => HandleMessage(update.Message),
                 // UpdateType.CallbackQuery => HandlingCallback(update.CallbackQuery),
                 // _ => throw new ApplicationException($"Type '{update.Type}' not support")
             };
-
+    }
     /*private async Task HandlingCallback(CallbackQuery callback)
     {
         var (commandId, chatId, value) = GetInfoFromCallBack(callback.Data);
@@ -39,11 +42,25 @@ public class UpdateService : IUpdateService
             // await _botService.Client.SendTextMessageAsync(chatId, $"success update state of repeat to {value}");
         }
     }*/
-    
+
     private async Task HandleMessage(Message message)
     {
         if (!IsValid(message)) return;
 
+        if (message.Text.StartsWith("/"))
+            await HandleCommand(message);
+
+        await HandleSimpleRegular(message);
+    }
+
+    private async Task HandleCommand(Message message)
+    {
+        if (await InlineCommandService.IsCommand(message.Text.Split(' ').First()))
+            await InlineCommandService.HandleCommand(message.Text, message.From.Id, message.Chat.Id);
+    }
+
+    private async Task HandleSimpleRegular(Message message)
+    {
         if (Regex.IsMatch(message.Text, @"туп.*бот|бот.*туп|бот.*глуп", RegexOptions.IgnoreCase))
         {
             await BotService.SendTextMessageAsync(message.Chat.Id, "Kiss my shiny metal arse!!!");
