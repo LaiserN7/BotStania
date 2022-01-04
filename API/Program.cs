@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddApplication();
 //logger
 builder.BuildLogger();
 
