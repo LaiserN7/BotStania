@@ -11,7 +11,7 @@ public class BotClient
     private BotConfiguration BotConfig { get; }
 
     public BotClient(IOptions<BotConfiguration> config) =>
-        (BotConfig, Client) = (config.Value, BuildTelegramBotClient());
+        (BotConfig, Client) = (config.Value, null);
     
     public ITelegramBotClient GetBotClient()
     {
