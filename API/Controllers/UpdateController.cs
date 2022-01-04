@@ -17,7 +17,8 @@ public class UpdateController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] object update)
     {
-        await UpdateService.EchoAsync((Update)update);
+        var s = (Update) update;
+        await UpdateService.EchoAsync(s);
         return Ok();
     }
 }

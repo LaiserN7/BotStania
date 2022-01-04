@@ -18,7 +18,7 @@ public class ExceptionHandlingMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        var body = await Request.GetBody(context.Request);
+        //var body = await Request.GetBody(context.Request);
         var (chatId, message) = await Request.GetInfo(context.Request);
         try
         {
@@ -26,7 +26,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception exception)
         {
-            Logger.LogInformation(body); 
+            //Logger.LogInformation(body); 
             OnException(exception, chatId, message);
         }
     }
@@ -34,5 +34,6 @@ public class ExceptionHandlingMiddleware
     private void OnException(Exception exception, long chatId, string message)
     {
         Logger.LogCritical( exception, DefaultMessage);
+        Logger.LogError(exception.Message);
     }
 }
