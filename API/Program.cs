@@ -1,4 +1,5 @@
 using API.Middlewares;
+using Application;
 using Infrastructure;
 using Infrastructure.Logger;
 
@@ -12,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 //logger
 builder.BuildLogger();
 

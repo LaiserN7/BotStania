@@ -21,7 +21,9 @@ public class UpdateService : IUpdateService
 
     public Task EchoAsync(Update update, CancellationToken cancellationToken)
         =>
+#pragma warning disable CS8509
             update.Type switch
+#pragma warning restore CS8509
             {
                 UpdateType.Message => HandleMessage(update.Message, cancellationToken),
                 // UpdateType.CallbackQuery => HandlingCallback(update.CallbackQuery),
