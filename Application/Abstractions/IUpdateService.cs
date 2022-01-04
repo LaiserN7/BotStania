@@ -4,5 +4,5 @@ namespace Application.Abstractions;
 
 public interface IUpdateService
 {
-    Task EchoAsync(Update update, CancellationToken cancellationToken);
+    Task EchoAsync(Update update);
 }

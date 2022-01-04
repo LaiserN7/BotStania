@@ -15,9 +15,9 @@ public class UpdateController : ControllerBase
         (Logger, UpdateService) = (logger, updateService);
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] Update update, CancellationToken cancellationToken)
+    public async Task<IActionResult> Post([FromBody] Update update)
     {
-        await UpdateService.EchoAsync(update, cancellationToken);
+        await UpdateService.EchoAsync(update);
         return Ok();
     }
 }

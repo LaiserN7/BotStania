@@ -19,13 +19,13 @@ public class UpdateService : IUpdateService
         BotService = botService;
     }
 
-    public Task EchoAsync(Update update, CancellationToken cancellationToken)
+    public Task EchoAsync(Update update)
         =>
 #pragma warning disable CS8509
             update.Type switch
 #pragma warning restore CS8509
             {
-                UpdateType.Message => HandleMessage(update.Message, cancellationToken),
+                UpdateType.Message => HandleMessage(update.Message),
                 // UpdateType.CallbackQuery => HandlingCallback(update.CallbackQuery),
                 // _ => throw new ApplicationException($"Type '{update.Type}' not support")
             };
@@ -40,13 +40,13 @@ public class UpdateService : IUpdateService
         }
     }*/
     
-    private async Task HandleMessage(Message message, CancellationToken cancellationToken)
+    private async Task HandleMessage(Message message)
     {
         if (!IsValid(message)) return;
 
         if (Regex.IsMatch(message.Text, @"туп.*бот|бот.*туп|бот.*глуп", RegexOptions.IgnoreCase))
         {
-            await BotService.SendTextMessageAsync(message.Chat.Id, "Kiss my shiny metal arse!!!", cancellationToken: cancellationToken);
+            await BotService.SendTextMessageAsync(message.Chat.Id, "Kiss my shiny metal arse!!!");
             return;
         }
 
@@ -54,7 +54,7 @@ public class UpdateService : IUpdateService
                 @"руслан.*знаешь|знаешь.*руслан|руслан.*ведь|дим.*ведь|андрей.*ведь|антон.*ведь",
                 RegexOptions.IgnoreCase))
         {
-            await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["Sticker_Ti_pidor"], cancellationToken: cancellationToken);
+            await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["Sticker_Ti_pidor"]);
             return;
         }
 
