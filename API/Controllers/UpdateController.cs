@@ -15,10 +15,10 @@ public class UpdateController : ControllerBase
         (Logger, UpdateService) = (logger, updateService);
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] object update)
+    public async Task<IActionResult> Post(string json)
     {
-        var s = (Update) update;
-        await UpdateService.EchoAsync(s);
+        await UpdateService.EchoAsync(json);
         return Ok();
     }
 }
+

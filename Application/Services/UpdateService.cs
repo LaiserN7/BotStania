@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 using Application.Abstractions;
 using Domain.Constants;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -19,17 +20,18 @@ public class UpdateService : IUpdateService
         BotService = botService;
     }
 
-    public Task EchoAsync(Update update)
-        =>
-#pragma warning disable CS8509
-            update.Type switch
-#pragma warning restore CS8509
-            {
-                UpdateType.Message => HandleMessage(update.Message),
-                // UpdateType.CallbackQuery => HandlingCallback(update.CallbackQuery),
-                // _ => throw new ApplicationException($"Type '{update.Type}' not support")
-            };
-
+    public Task EchoAsync(string json)
+    {
+        Logger.LogInformation(json);
+        
+        var update = JsonConvert.DeserializeObject<Update>(json);
+        return update.Type switch
+        {
+            UpdateType.Message => HandleMessage(update.Message),
+            // UpdateType.CallbackQuery => HandlingCallback(update.CallbackQuery),
+            // _ => throw new ApplicationException($"Type '{update.Type}' not support")
+        };
+    }
     /*private async Task HandlingCallback(CallbackQuery callback)
     {
         var (commandId, chatId, value) = GetInfoFromCallBack(callback.Data);
