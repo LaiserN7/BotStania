@@ -4,5 +4,5 @@ namespace Application.Abstractions;
 
 public interface IUpdateService
 {
-    Task EchoAsync(string json);
+    Task EchoAsync(Update update);
 }

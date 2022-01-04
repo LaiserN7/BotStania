@@ -23,9 +23,9 @@ public class BotClient
     {
         return BotConfig.IsPoxyEnabled
             ? new TelegramBotClient(
-                BotConfig.BotToken,
+                Environment.GetEnvironmentVariable("BOT_TOKEN"),
                 GetProxyClient(BotConfig.Host, BotConfig.Port, BotConfig.UserName, BotConfig.Password))
-            : new TelegramBotClient(BotConfig.BotToken);
+            : new TelegramBotClient(Environment.GetEnvironmentVariable("BOT_TOKEN"));
     }
 
     private static HttpClient GetProxyClient(string host, int port, string username, string password)

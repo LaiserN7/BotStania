@@ -2,7 +2,7 @@ using API.Middlewares;
 using Application;
 using Infrastructure;
 using Infrastructure.Logger;
-
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddControllers().AddNewtonsoftJson();
 //logger
 builder.BuildLogger();
 

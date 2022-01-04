@@ -32,7 +32,7 @@ public static class LoggerBuilder
             .AddJsonFile($"appsettings.json", optional: true, reloadOnChange: true);
 
         var configurationRoot = configurationBuilder.Build();
-        var token = configurationRoot[$"{nameof(BotConfiguration)}:{nameof(BotConfiguration.BotToken)}"];
+        var token = Environment.GetEnvironmentVariable("BOT_TOKEN");
         var baseChatId = configurationRoot[$"{nameof(BotConfiguration)}:{nameof(BotConfiguration.BaseChatId)}"];
         TryParse(baseChatId, out var chatId);
         return (token, chatId);
