@@ -52,7 +52,7 @@ public class InlineCommandsService : IInlineCommandService
                 await BotService.SendTextMessageAsync(ChatId, BuildInfo());
                 break;
             case InlineCommands.SetTrustedUser:
-                var added =await TryAddUser();
+                var added = await TryAddUser();
                 var message = added ? ResponseText.Success : ResponseText.Failed;
                 await BotService.SendTextMessageAsync(ChatId, message);
                 break;
@@ -73,13 +73,13 @@ public class InlineCommandsService : IInlineCommandService
         }
 
         return Task.FromResult(added);
-    } 
+    }
 
     private static string BuildInfo()
     {
         var sb = new StringBuilder();
         sb.AppendLine("Hello from STANIA BOT");
-        sb.AppendLine("______________");
+        sb.AppendLine("_____________________");
         sb.AppendLine("Usages commands");
         foreach (var key in InlineCommands.AllKeys)
         {

@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using Application.Abstractions;
 using Domain.Constants;
@@ -13,6 +14,8 @@ public class UpdateService : IUpdateService
     private IBotService BotService { get; }
     private ILogger<UpdateService> Logger { get; }
     private IInlineCommandService InlineCommandService { get; }
+    private static int NeedReplyCounter { get; set; } = new Random().Next(1, 20); 
+    
 
     public UpdateService(IBotService botService, ILogger<UpdateService> logger,
         IInlineCommandService inlineCommandService)
@@ -50,7 +53,27 @@ public class UpdateService : IUpdateService
         if (message.Text.StartsWith("/"))
             await HandleCommand(message);
 
-        await HandleSimpleRegular(message);
+        if (await HandleSimpleRegular(message))
+            return;
+        await HandleCountTriggers(message);
+    }
+
+    private async Task HandleCountTriggers(Message message)
+    {
+        if (NeedReplyCounter == default)
+        {
+            await BotService.SendReplyMessageAsync(message.Chat.Id, message.MessageId, GetFunnyMessage());
+            NeedReplyCounter = new Random().Next(1, 20);
+            return;
+        }
+
+        NeedReplyCounter--;
+    }
+
+    private static string GetFunnyMessage()
+    {
+        var rnd = new Random().Next(0, FunnyMessages.Messages.Length);
+        return FunnyMessages.Messages[rnd];
     }
 
     private async Task HandleCommand(Message message)
@@ -59,12 +82,12 @@ public class UpdateService : IUpdateService
             await InlineCommandService.HandleCommand(message.Text, message.From.Id, message.Chat.Id);
     }
 
-    private async Task HandleSimpleRegular(Message message)
+    private async ValueTask<bool> HandleSimpleRegular(Message message)
     {
         if (Regex.IsMatch(message.Text, @"туп.*бот|бот.*туп|бот.*глуп", RegexOptions.IgnoreCase))
         {
             await BotService.SendTextMessageAsync(message.Chat.Id, "Kiss my shiny metal arse!!!");
-            return;
+            return true;
         }
 
         if (Regex.IsMatch(message.Text,
@@ -72,63 +95,65 @@ public class UpdateService : IUpdateService
                 RegexOptions.IgnoreCase))
         {
             await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["Sticker_Ti_pidor"]);
-            return;
+            return true;
         }
 
         if (Regex.IsMatch(message.Text, @"красава.*бот|бот.*красава|cтаня.*красава", RegexOptions.IgnoreCase))
         {
             await BotService.SendTextMessageAsync(message.Chat.Id, "Спасибо, бро)))");
             await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["krasava"]);
-            return;
+            return true;
         }
 
         if (Regex.IsMatch(message.Text, @"ping", RegexOptions.IgnoreCase))
         {
             await BotService.SendTextMessageAsync(message.Chat.Id, "pong");
-            return;
+            return true;
         }
 
         if (Regex.IsMatch(message.Text, @"^нет", RegexOptions.IgnoreCase))
         {
             await BotService.SendTextMessageAsync(message.Chat.Id, "Пидора ответ");
-            return;
+            return true;
         }
 
         if (Regex.IsMatch(message.Text, @"^Всем привет|^Привет Станя|^Здорова Станя", RegexOptions.IgnoreCase))
         {
             await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["privet"]);
-            return;
+            return true;
         }
 
         if (Regex.IsMatch(message.Text, @"^Станя го бухать", RegexOptions.IgnoreCase))
         {
             await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["go_buxat"]);
-            return;
+            return true;
         }
 
         if (Regex.IsMatch(message.Text, @"^го бухать ребята", RegexOptions.IgnoreCase))
         {
             await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["buxat_student"]);
-            return;
+            return true;
         }
 
         if (Regex.IsMatch(message.Text, @"так точно", RegexOptions.IgnoreCase))
         {
             await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["capitan"]);
-            return;
+            return true;
         }
 
         if (Regex.IsMatch(message.Text, @"кофе", RegexOptions.IgnoreCase))
         {
             await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["pikachu_coffe"]);
-            return;
+            return true;
         }
 
         if (Regex.IsMatch(message.Text, @"где\sты|где\sвы", RegexOptions.IgnoreCase))
         {
             await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["gde_vse"]);
-            return;
+            return true;
         }
+
+        return false;
     }
 
     private static bool IsValid(Message message)

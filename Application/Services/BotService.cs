@@ -26,4 +26,11 @@ public class BotService : IBotService
     {
         await BotClient.SendStickerAsync(new ChatId(chatId), sticker, cancellationToken: cancellationToken);
     }
+
+    public async Task SendReplyMessageAsync(long chatId, int replyMessageId, string text,
+        CancellationToken cancellationToken = default)
+    {
+        await BotClient.SendTextMessageAsync(new ChatId(chatId), text, replyToMessageId: replyMessageId,
+            cancellationToken: cancellationToken);
+    }
 }
