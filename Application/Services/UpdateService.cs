@@ -84,7 +84,7 @@ public class UpdateService : IUpdateService
 
     private async ValueTask<bool> HandleSimpleRegular(Message message)
     {
-        if (Regex.IsMatch(message.Text, @"туп.*бот|бот.*туп|бот.*глуп", RegexOptions.IgnoreCase))
+        if (Regex.IsMatch(message.Text, @"туп.*бот|бот.*туп|бот.*глуп|станя.*туп", RegexOptions.IgnoreCase))
         {
             await BotService.SendTextMessageAsync(message.Chat.Id, "Kiss my shiny metal arse!!!");
             return true;
