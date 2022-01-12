@@ -28,8 +28,8 @@ public static class LoggerBuilder
     {
         var configurationBuilder = new ConfigurationBuilder()
             .SetBasePath(builder.Environment.ContentRootPath)
-            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-            .AddJsonFile($"appsettings.json", optional: true, reloadOnChange: true);
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+            .AddJsonFile($"appsettings.json", true, true);
 
         var configurationRoot = configurationBuilder.Build();
         var token = Environment.GetEnvironmentVariable("BOT_TOKEN");

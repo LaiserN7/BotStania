@@ -58,6 +58,7 @@ public class UpdateService : IUpdateService
         await HandleCountTriggers(message);
     }
 
+    //todo: move to service
     private async Task HandleCountTriggers(Message message)
     {
         if (NeedReplyCounter == default)
@@ -82,8 +83,10 @@ public class UpdateService : IUpdateService
             await InlineCommandService.HandleCommand(message.Text, message.From.Id, message.Chat.Id);
     }
 
+    //todo: move to service
     private async ValueTask<bool> HandleSimpleRegular(Message message)
     {
+        //todo: move to constants
         if (Regex.IsMatch(message.Text, @"туп.*бот|бот.*туп|бот.*глуп|станя.*туп", RegexOptions.IgnoreCase))
         {
             await BotService.SendTextMessageAsync(message.Chat.Id, "Kiss my shiny metal arse!!!");
