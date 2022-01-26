@@ -94,7 +94,7 @@ public class UpdateService : IUpdateService
         }
 
         if (Regex.IsMatch(message.Text,
-                @"руслан.*знаешь|знаешь.*руслан|руслан.*ведь|дим.*ведь|андрей.*ведь|антон.*ведь",
+                @"руслан.*знаешь|знаешь.*руслан|руслан.*ведь|дим.*ведь|андрей.*ведь|антон.*ведь|кирилл.*ведь|влад.*ведь",
                 RegexOptions.IgnoreCase))
         {
             await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["Sticker_Ti_pidor"]);
