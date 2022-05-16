@@ -50,7 +50,7 @@ public class UpdateService : IUpdateService
     {
         if (!IsValid(message)) return;
 
-        if (message.Text.StartsWith("/"))
+        if (message.Text!.StartsWith("/"))
             await HandleCommand(message);
 
         if (await HandleSimpleRegular(message))
@@ -87,9 +87,15 @@ public class UpdateService : IUpdateService
     private async ValueTask<bool> HandleSimpleRegular(Message message)
     {
         //todo: move to constants
-        if (Regex.IsMatch(message.Text, @"туп.*бот|бот.*туп|бот.*глуп|станя.*туп", RegexOptions.IgnoreCase))
+        if (Regex.IsMatch(message.Text!, @"туп.*бот|бот.*туп|бот.*глуп|станя.*туп", RegexOptions.IgnoreCase))
         {
             await BotService.SendTextMessageAsync(message.Chat.Id, "Kiss my shiny metal arse!!!");
+            return true;
+        }
+
+        if (Regex.IsMatch(message.Text, "руслан ты", RegexOptions.IgnoreCase))
+        {
+            await BotService.SendTextMessageAsync(message.Chat.Id, "Лысый пес!");
             return true;
         }
 
