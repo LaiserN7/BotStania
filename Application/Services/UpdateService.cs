@@ -106,6 +106,14 @@ public class UpdateService : IUpdateService
             await BotService.SendStickerAsync(message.Chat.Id, Stickers.StickerKeys["Sticker_Ti_pidor"]);
             return true;
         }
+        
+        if (Regex.IsMatch(message.Text,
+                @"наиль.*ведь",
+                RegexOptions.IgnoreCase))
+        {
+            await BotService.SendTextMessageAsync(message.Chat.Id, "ты красавчик");
+            return true;
+        }
 
         if (Regex.IsMatch(message.Text, @"красава.*бот|бот.*красава|cтаня.*красава", RegexOptions.IgnoreCase))
         {
