@@ -17,9 +17,9 @@ public static class LoggerBuilder
         var logger = new LoggerConfiguration().WriteTo
             .Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
             //.WriteTo.File("log.txt")
-#if !DEBUG
-            .WriteTo.TelegramSink(token, chatId)
-#endif
+// #if !DEBUG
+//             .WriteTo.TelegramSink(token, chatId)
+// #endif
             .CreateLogger();
         builder.Logging.AddSerilog(logger);
     }
