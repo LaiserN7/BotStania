@@ -34,6 +34,8 @@ app.UseExceptionHandling();
 
 app.UseAuthorization();
 
+app.MapGet("/", () => "Hello from BOT!");
+
 app.MapControllers();
 
 app.Run();
