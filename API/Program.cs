@@ -22,7 +22,6 @@ var app = builder.Build();
 app.Logger.LogInformation("The application started");
 
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -30,7 +29,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionHandling();
-//app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
 
